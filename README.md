@@ -4,6 +4,21 @@ This document goes beyond PEP8 to cover the core of what I think of as great Pyt
 
 [strunk-white]: https://en.wikipedia.org/wiki/The_Elements_of_Style
 
+# Table of Contents
+
+  * [The Elements of Python Style](#the-elements-of-python-style)
+    * [Follow Most PEP8 Guidelines](#follow-most-pep8-guidelines)
+    * [Flexibility on Line Length](#flexibility-on-line-length)
+    * [Consistent Naming](#consistent-naming)
+    * [Nitpicks That Aren't Worth It](#nitpicks-that-arent-worth-it)
+    * [Writing Good Docstrings](#writing-good-docstrings)
+    * [Paradigms and Patterns](#paradigms-and-patterns)
+    * [A Little Zen for Your Code Style](#a-little-zen-for-your-code-style)
+    * [Six of One, Half a Dozen of the Other](#six-of-one-half-a-dozen-of-the-other)
+    * [Standard Tools and Project Structure](#standard-tools-and-project-structure)
+    * [Some Inspiration](#some-inspiration)
+    * [Contributors](#contributors)
+
 ## Follow Most [PEP8 Guidelines][pep8]
 
 ... but, be flexible on naming and line length.
