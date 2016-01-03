@@ -419,7 +419,7 @@ As a good rule of thumb for whether your function is simple enough, ask yourself
 
 ### Avoid "traditional" OOP
 
-In "traditional OOP languages" like Java and C++, code re-use is achieved through class heirarchies and polymorphism, or so those languages claim. In Python, though we have the ability to subclass and to do class-based polymorphism, in practice, these capabilities are used rarely in idiomatic Python programs.
+In "traditional OOP languages" like Java and C++, code re-use is achieved through class hierarchies and polymorphism, or so those languages claim. In Python, though we have the ability to subclass and to do class-based polymorphism, in practice, these capabilities are used rarely in idiomatic Python programs.
 
 It's more common to achieve re-use through modules and functions, and it's more common to achieve dynamic dispatch through duck typing. If you find yourself using super classes as a form of code re-use, stop what you're doing and reconsider. If you find yourself using lots of polymorphism, consider whether one of Python's dunder protocols or duck typing strategies might apply better.
 
