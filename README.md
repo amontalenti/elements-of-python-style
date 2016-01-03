@@ -8,7 +8,7 @@ This document goes beyond PEP8 to cover the core of what I think of as great Pyt
 
 ... but, be flexible on naming and line length.
 
-PEP8 covers lots of mundane stuff like whitespace, line breaks between functions/classes/methods, imports, and warning against use of deprecated functionality. Pretty much everything in there is good. 
+PEP8 covers lots of mundane stuff like whitespace, line breaks between functions/classes/methods, imports, and warning against use of deprecated functionality. Pretty much everything in there is good.
 
 The best tool to enforce these rules, while also helping you catch silly Python syntax errors, is [flake8][flake8].
 
@@ -55,8 +55,10 @@ You can also choose to use `CamelCase` for things that are class-like but not qu
 
 PEP8 suggests using a trailing underscore to avoid aliasing a built-in, e.g.
 
-    sum_ = sum(some_long_list)
-    print(sum_)
+```python
+sum_ = sum(some_long_list)
+print(sum_)
+```
 
 This is OK in a pinch, but it might be better to just choose a different name.
 
@@ -70,24 +72,32 @@ There are some one-character label names that are common and acceptable.
 
 With `lambda`, using `x` for single-argument functions is OK. For example:
 
-    encode = lambda x: x.encode("utf-8", "ignore")
+```python
+encode = lambda x: x.encode("utf-8", "ignore")
+```
 
 With tuple unpacking, using `_` as a throwaway label is also OK. For example:
 
-    _, url, urlref = data
+```python
+_, url, urlref = data
+```
 
 This basically means, "ignore the first element."
 
 Similar to `lambda`, inside list/dict/set comprehensions, generator expressions, or very short (1-2 line) for loops, a single-char iteration label can be used. This is also typically `x`, e.g.
 
-    sum(x for x in items if x > 0)
+```python
+sum(x for x in items if x > 0)
+```
 
 to sum all positive integers in the sequence `items`.
 
 It is also very common to use `i` as shorthand for "index", and commonly with the `enumerate` built-in. For example:
 
-    for i, item in enumerate(items):
-        print("%4s: %s" % (i, item))
+```python
+for i, item in enumerate(items):
+    print("%4s: %s" % (i, item))
+```
 
 Outside of these cases, you should rarely, perhaps **never**, use single-character label/argument/method names. This is because it just makes it impossible to `grep` for stuff.
 
@@ -105,68 +115,80 @@ There's nothing to gain from not following these rules, so you should just follo
 
 ### Always [inherit from `object`][newstyle] and use new-style classes
 
-    # good
-    class JSONWriter(object):
-        pass
-    
-    # bad
-    class JSONWriter:
-        pass
+```python
+# bad
+class JSONWriter:
+    pass
+
+# good
+class JSONWriter(object):
+    pass
+```
 
 (This rule flips in Python 3.)
 
 ### Don't repeat instance labels in the class
 
-    # good
-    class JSONWriter(object):
-        def __init__(self, handler):
-            self.handler = handler
+```python
+# bad
+class JSONWriter(object):
+    handler = None
+    def __init__(self, handler):
+        self.handler = handler
 
-    # bad
-    class JSONWriter(object):
-        handler = None
-        def __init__(self, handler):
-            self.handler = handler
+# good
+class JSONWriter(object):
+    def __init__(self, handler):
+        self.handler = handler
+```
 
 ### Prefer [list/dict/set comprehensions][mapfilter] over map/filter.
 
-     # good
-     [myfunc(x) for x in some_list if len(x) > 0)]
+```python
+ # bad
+ filter(lambda x: len(x > 0), map(myfunc, some_list))
 
-     # bad
-     filter(lambda x: len(x > 0), map(myfunc, some_list))
+ # good
+ [myfunc(x) for x in some_list if len(x) > 0)]
+```
 
 ### Use parens `(...)` for continuations
 
-    # good
-    from itertools import (groupby, chain,
-                           izip, islice)
-    
-    # bad
-    from itertools import groupby, chain, \
-                          izip, islice
+```python
+# bad
+from itertools import groupby, chain, \
+                      izip, islice
+
+# good
+from itertools import (groupby, chain,
+                       izip, islice)
+```
 
 ### Use parens `(...)` for fluent APIs
 
-    # bad
-    s = Search(using=client) \
-        .filter("term", cat="search") \
-        .query("match", title="python")
-    
-    # good
-    s = (Search(using=client)
-         .filter("term", cat="search")
-         .query("match", title="python"))
+```python
+# bad
+s = Search(using=client) \
+    .filter("term", cat="search") \
+    .query("match", title="python")
+
+# good
+s = (Search(using=client)
+     .filter("term", cat="search")
+     .query("match", title="python"))
+```
 
 ### Use implicit continuations in function calls
 
-    # bad (unnecessary!)
-    return set((key.lower(), val.lower()) \
-               for key, val in mapping.iteritems())
-    
-    # good
-    return set((key.lower(), val.lower())
-               for key, val in mapping.iteritems())
+```python
+# bad -- simply unnecessary backslash
+return set((key.lower(), val.lower()) \
+           for key, val in mapping.iteritems())
+
+# good
+return set((key.lower(), val.lower())
+           for key, val in mapping.iteritems())
+```
 
 ### Use `isinstance(obj, cls)`, not `type(obj) == cls`
 
@@ -176,30 +198,34 @@ This is because `isinstance` covers way more cases, including sub-classes and AB
 
 The `with` statement subtly handles file closing and lock releasing even in the case of exceptions being raised. So:
 
-    # good
-    with open("somefile.txt", "w") as somefile:
-        somefile.write("sometext")
-    return
-    
-    # bad
-    somefile = open("somefile.txt", "w")
+```python
+# bad
+somefile = open("somefile.txt", "w")
+somefile.write("sometext")
+return
+
+# good
+with open("somefile.txt", "w") as somefile:
     somefile.write("sometext")
-    return
+return
+```
 
 ### Use `is` when comparing to `None`
 
 The `None` value is a singleton but when you're checking for `None`, you rarely want to actually call `__eq__` on the LHS argument. So:
 
-    # good
-    if item is None:
-       continue
-    
-    # bad
-    if item == None:
-        continue
+```python
+# bad
+if item == None:
+    continue
+
+# good
+if item is None:
+   continue
+```
 
 Not only is the good form faster, it's also more correct. It's no more concise to use `==`, so just remember this rule!
- 
+
 ### Avoid `sys.path` hacks
 
 It can be tempting to do `sys.path.insert(0, "../")` and similar to control Python's import approach, but you should avoid these like the plague.
@@ -212,14 +238,16 @@ Python has a somewhat-complex, but very comprehensible, approach to module path 
 
 ... and when you must, don't make too many.
 
-     # good
-     raise ValueError("bad value for url: %s" % url)
+```python
+ # bad
+ class ArgumentError(Exception):
+     pass
+ ...
+ raise ArgumentError(url)
 
-     # bad
-     class ArgumentError(Exception):
-         pass
-     ...
-     raise ArgumentError(url)
+ # good
+ raise ValueError("bad value for url: %s" % url)
+```
 
 Note that Python includes [a rich set of built-in exception classes][ex-tree]. Leverage these appropriately, and you should "customize" them simply by instantiating them with string messages that describe the specific error condition you hit. It is most common to raise `ValueError` (bad argument), `LookupError` (bad key), or `AssertionError` (via the `assert` statement) in user code.
 
@@ -230,15 +258,17 @@ A good rule of thumb for whether you should create your own exception type is to
 
 ### Short docstrings are proper one-line sentences
 
-    # good
-    def reverse_sort(items):
-        """Sorts the sequence of items in reverse order."""
+```python
+# bad
+def reverse_sort(items):
+    """
+    sorts items in reverse order
+    """
 
-    # bad
-    def reverse_sort(items):
-        """
-        sorts the sequence of items in reverse order
-        """
+# good
+def reverse_sort(items):
+    """Sorts items in reverse order."""
+```
 
 Keep the triple-quote's on the same line `"""`, capitalize the first letter, and include a period. Four lines become two, the `__doc__` attribute doesn't have crufty newlines, and the pedants are pleased!
 
@@ -256,21 +286,25 @@ This is perhaps the ultimate nitpick, but if you don't do it, it will drive peop
 
 Here's a quick reference to using Sphinx-style reST in your function docstrings:
 
-    def get(url, qsargs=None, timeout=5.0):
-        """Sends an HTTP GET request.
-    
-        :param url: URL for the new request.
-        :type url: str
-        :param qsargs: Converted to query string arguments.
-        :type qsargs: dict
-        :param timeout: In seconds.
-        :rtype: mymodule.Response
-    """
-    return request('get', url, qsargs=qsargs, timeout=timeout)
+```python
+def get(url, qsargs=None, timeout=5.0):
+    """Sends an HTTP GET request.
+
+    :param url: URL for the new request.
+    :type url: str
+    :param qsargs: Converted to query string arguments.
+    :type qsargs: dict
+    :param timeout: In seconds.
+    :rtype: mymodule.Response
+"""
+return request('get', url, qsargs=qsargs, timeout=timeout)
+```
 
 Don't document for the sake of documenting. The way to think about this is:
 
-     good_names + explicit_defaults > verbose_docs + type_specs
+```python
+good_names + explicit_defaults > verbose_docs + type_specs
+```
 
 That is, in the example above, there is no need to say `timeout` is a `float`, because the default value is `5.0`, which is clearly a `float`. It is useful to indicate in the documentation that the semantic meaning is "seconds", thus `5.0` means 5 seconds. Meanwhile, the caller has no clue what `qsargs` should be, so we give a hint with the `type` annotation, and the caller also has no clue what to expect back from the function, so an `rtype` annotation is appropriate.
 
@@ -304,23 +338,27 @@ Use lightweight data structures like `list`, `dict`, `tuple`, and `set` to your 
 
 The ultimate example of this is the common list comprehension refactoring:
 
-     filtered = []
-     for x in items:
-         if x.endswith(".py"):
-             filtered.append(x)
-     return filtered
+```python
+ filtered = []
+ for x in items:
+     if x.endswith(".py"):
+         filtered.append(x)
+ return filtered
+```
 
 should be rewritten as:
 
-     return [x
-             for x in items
-             if x.endswith(".py")]
+```python
+ return [x
+         for x in items
+         if x.endswith(".py")]
+```
 
 But another good example is rewriting an if/else chain as a dictionary lookup or repetitive code as a tuple of operations followed by a for loop.
 
 ### Grok generators
 
-Generators are one of Python's most powerful features -- you should master the `yield` keyword and generator expressions. Not only are they important for any function that needs to be called over a large stream of data, but they also have the effect of simplifying code by making it easy for you to write your own iterators. Refactoring code to generators often simplifies it while making it work in more scenarios. You should be comfortable with using and creating generators. 
+Generators are one of Python's most powerful features -- you should master the `yield` keyword and generator expressions. Not only are they important for any function that needs to be called over a large stream of data, but they also have the effect of simplifying code by making it easy for you to write your own iterators. Refactoring code to generators often simplifies it while making it work in more scenarios. You should be comfortable with using and creating generators.
 
 David Beazley has [a YouTube tutorial on generators entitled "Generators: The Final Frontier"](https://www.youtube.com/watch?v=5-qadlG7tWo) that tells you everything you need to know.
 
@@ -330,27 +368,31 @@ This is a concept that we can borrow from the functional programming community. 
 
 As a simple example, you should **never** write code like this:
 
-    # bad
-    def dedupe(items):
-        """Removes dupes in-place, returns number removed."""
-        seen = set()
-        dupes = []
-        for i, item in enumerate(items):
-            if item in seen:
-                dupes.append(i)
-            else:
-                seen.add(item)
-        num_removed = len(dupes)
-        for idx in sorted(dupes, reverse=True):
-            items.pop(idx)
-        return num_removed
+```python
+# bad
+def dedupe(items):
+    """Removes dupes in-place, returns number removed."""
+    seen = set()
+    dupes = []
+    for i, item in enumerate(items):
+        if item in seen:
+            dupes.append(i)
+        else:
+            seen.add(item)
+    num_removed = len(dupes)
+    for idx in sorted(dupes, reverse=True):
+        items.pop(idx)
+    return num_removed
+```
 
 This same function can be written as follows:
 
-    # good
-    def dedupe(items):
-        """Removes dupes, returns set of unique values."""
-        return set(items)
+```python
+# good
+def dedupe(items):
+    """Removes dupes, returns set of unique values."""
+    return set(items)
+```
 
 This is a somewhat shocking example, because in addition to making this function "pure", we also made it much, much shorter. But it's not only shorter: it's better in a number of ways. The most important part is that for the good version, `assert dedupe(items) == dedupe(items)` always holds true. This makes it much easier to reason about, and much easier to test.
 
@@ -362,7 +404,7 @@ As a good rule of thumb for whether your function is simple enough, ask yourself
 
 ### Avoid "traditional" OOP
 
-In "traditional OOP languages" like Java and C++, code re-use is achieved through class heirarchies and polymorphism, or so those languages claim. In Python, though we have the ability to subclass and to do class-based polymorphism, in practice, these capabilities are used rarely in idiomatic Python programs. 
+In "traditional OOP languages" like Java and C++, code re-use is achieved through class heirarchies and polymorphism, or so those languages claim. In Python, though we have the ability to subclass and to do class-based polymorphism, in practice, these capabilities are used rarely in idiomatic Python programs.
 
 It's more common to achieve re-use through modules and functions, and it's more common to achieve dynamic dispatch through duck typing. If you find yourself using super classes as a form of code re-use, stop what you're doing and reconsider. If you find yourself using lots of polymorphism, consider whether one of Python's dunder protocols or duck typing strategies might apply better.
 
@@ -370,14 +412,16 @@ See also the excellent Python talk, ["Stop Writing Classes"][stop-classes], by a
 
 [stop-classes]: https://www.youtube.com/watch?v=o9pEzgHorH0
 
-### Using Mixins for re-use (sparingly)
+### Mixins are sometimes OK
 
 One way to do class-based re-use without going overboard on type hierarchies is to use Mixins. Don't overuse these, though. "Flat is better than nested" applies to type hierarchies, too, so you should avoid introducing needless required layers of hierarchy just to decompose behavior.
 
 Mixins are not actually a Python language feature, but are possible thanks to its support for multiple inheritance. You can create base classes that "inject" functionality into your subclass without forming an "important" part of a type hierarchy, simply by listing that base class as the first entry in the `bases` list. An example:
 
-    class APIHandler(AuthMixin, RequestHandler):
-        """Handle HTTP/JSON requests with security."""
+```python
+class APIHandler(AuthMixin, RequestHandler):
+    """Handle HTTP/JSON requests with security."""
+```
 
 The order matters, so may as well remember the rule: `bases` forms a hierarchy bottom-to-top. One readability benefit here is that everything you need to know about this class is contained in the `class` definition itself: "it mixes in auth behavior and is a specialized Tornado RequestHandler."
 
@@ -426,17 +470,23 @@ This one is really easy to understand. The best functions have no nesting, neith
 
 Also, don't be afraid to refactor a nested if statement into a multi-part boolean conditional. For example:
 
-    if response:
-        if "data" in response:
-            if len(response["data"]) > 0:
-                return response["data"]
+```python
+# bad
+if response:
+    if "data" in response:
+        if len(response["data"]) > 0:
+            return response["data"]
+```
 
 is better written as:
 
-    if (response and 
-        "data" in response and
-        len(response["data"]) > 0):
-        return response["data"] 
+```python
+# good
+if (response and
+    "data" in response and
+    len(response["data"]) > 0):
+    return response["data"]
+```
 
 ### Readability counts
 
@@ -460,17 +510,21 @@ But seriously: beautiful code without tests is simply worse than even the uglies
 
 This is a section for arguments we'd rather not settle. Don't rewrite other people's code because of this stuff. Feel free to use these forms interchangeably.
 
-### `str.format` vs overloaded format `%` 
+### `str.format` vs overloaded format `%`
 
 Look, `str.format` is more robust, yet `%` with `"%s %s"` printf-style strings is more concise. Both will be around forever.
 
 Remember to use unicode strings for your format pattern, if you need to preserve unicode:
 
-    u"%s %s" % (dt.datetime.utcnow().isoformat(), line)
+```python
+u"%s %s" % (dt.datetime.utcnow().isoformat(), line)
+```
 
 If you do end up using `%`, you should consider the `"%(name)s"` syntax which allows you to use a dictionary rather than a tuple, e.g.
 
-    u"%(time)s %(line)s" % {"time": dt.datetime.utcnow().isoformat(), "line": line}
+```python
+u"%(time)s %(line)s" % {"time": dt.datetime.utcnow().isoformat(), "line": line}
+```
 
 Also, don't re-invent the wheel. One thing `str.format` does unequivocally better is support various [formatting modes][str-format], such as humanized numbers and percentages. Use them.
 
@@ -490,17 +544,21 @@ Look, truthiness is a [tad complicated][truth-values] in Python and certainly th
 
 Python's compiler will automatically join multiple quoted strings together into a single string during the parse phase if it finds nothing in between them, e.g.
 
-    msg = ("Hello, wayward traveler!\n"
-           "What shall we do today?\n"
-           "=>")
-    print(msg)
+```python
+msg = ("Hello, wayward traveler!\n"
+       "What shall we do today?\n"
+       "=>")
+print(msg)
+```
 
 This is roughly equivalent to:
 
-    msg = """Hello, wayward traveler!
-    What shall we do today?
-    =>"""
-    print(msg)
+```python
+msg = """Hello, wayward traveler!
+What shall we do today?
+=>"""
+print(msg)
+```
 
 In the former's case, you keep the indentation clean, but need the ugly newline characters. In the latter case, you don't need the newlines, but break indentation. We choose not to care.
 
@@ -508,8 +566,10 @@ In the former's case, you keep the indentation clean, but need the ugly newline 
 
 It turns out Python lets you pass either an exception **class** or an exception **instance** to the `raise` statement. For example, these two lines are roughly equivalent:
 
-    raise ValueError
-    raise ValueError()
+```python
+raise ValueError
+raise ValueError()
+```
 
 Essentially, Python turns the [first line into the second automatically][raises]. You should probably prefer the second form, if for no other reason than to **actually provide a useful argument**, like a helpful message about why the `ValueError` occurred. But these two lines **are** equivalent and you shouldn't rewrite one style into the other just because. We choose not to care.
 
@@ -531,12 +591,12 @@ We've made some choices on "best-of-breed" tools for things, as well as the very
 - `from functools import wraps`: use for writing well-behaved decorators
 - `argparse`: for "robust" CLI tool building
 - `fileinput`: to create quick UNIX pipe-friendly tools
-- `log = logging.getLogger(__name__)`: don't get fancy with logging
+- `log = logging.getLogger(__name__)`: good enough for logging
 - `from __future__ import absolute_import`: fixes import aliasing
 
 ### Common Third-Party Libraries
 
-- `python-dateutil` for datetime parsing and calendar stuff
+- `python-dateutil` for datetime parsing and calendars
 - `pytz` for timezone handling
 - `tldextract` for better URL handling
 - `msgpack-python` for a more compact encoding than JSON
@@ -554,8 +614,8 @@ For all Python packages and libraries:
 - `mypackage/settings.py` preferred to `settings.py`
 - `README.md` describes the repo for a newcomer, always use Markdown
 - `setup.py` for simple facilities like `setup.py develop`
-- `requirements.txt` describes prod dependencies for `pip`
-- `test-requirements.txt` additional dependencies for tests
+- `requirements.txt` describes package dependencies for `pip`
+- `dev-requirements.txt` additional dependencies for tests/local
 - `Makefile` for simple (!!!) build/lint/test/run steps
 
 Also, always [pin your requirements](http://nvie.com/posts/better-package-management/).
@@ -564,7 +624,7 @@ For "deployable" projects, such as web or backend services (rather than pure lib
 
 - `fabfile.py` for ssh/rsync to deploy servers
 - `.travis.yml` for continuous integration builds; should call `make`
-- `docker-compose.yml` for dependencies on databases
+- `docker-compose.yml` for dependencies on databases, like postgres or redis
 
 ## Some Inspiration
 
@@ -572,13 +632,23 @@ The following links may give you some inspiration about the core of writing Pyth
 
 - Python's stdlib [`Counter` class][Counter], implemented by Raymond Hettinger
 - The [`rq.queue` module][rq], originally by Vincent Driessen
-- Your humble author wrote [this blog post on "Pythonic" code][idiomatic]
+- This document's author also wrote [this blog post on "Pythonic" code][idiomatic]
 
 Go forth and be Pythonic!
 
-    $ python
-    >>> import antigravity
+```
+$ python
+>>> import antigravity
+```
 
 [Counter]: https://github.com/python/cpython/blob/57b569d8af2b3263c5d9e6d75fb308f89ea17ac6/Lib/collections/__init__.py#L446-L841
 [rq]: https://github.com/nvie/rq/blob/master/rq/queue.py
 [idiomatic]: http://www.pixelmonkey.org/2010/11/03/pythonic-means-idiomatic-and-tasteful
+
+## Contributors
+
+- Andrew Montalenti ([@amontalenti][amontalenti]): original author
+- Vincent Driessen ([@nvie][nvie]): edits and suggestions
+
+[amontalenti]: http://twitter.com/amontalenti
+[nvie]: http://twitter.com/nvie
