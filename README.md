@@ -653,6 +653,8 @@ $ python
 [amontalenti]: http://twitter.com/amontalenti
 [nvie]: http://twitter.com/nvie
 
-<small>Like good Python style?
-<a href="https://twitter.com/amontalenti/status/682968375702716416">Then perhaps you'd like to work on my team at Parse.ly!</a>
-</small>
+---
+
+Like good Python style? Then perhaps you'd like to [work on our team of Pythonistas][tweet] at Parse.ly!
+
+[tweet]: https://twitter.com/amontalenti/status/682968375702716416
