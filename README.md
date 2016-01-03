@@ -60,7 +60,7 @@ Many of these were adapted from [the Pocoo team][pocoo].
 
 You should generally follow these rules, unless you are mirroring some other tool's naming convention, like a database schema or message format.
 
-You can also choose to use `CamelCase` for things that are class-like but not quite classes -- the main benefit of `CamelCase` is calling attention to something as a "global noun", rather than a local label or a verb. Notice that Python names `True`, `False`, and `None` using `CamelCase` even though they are not classes.
+You can also choose to use `CamelCase` for things that are class-like but not quite classes -- the main benefit of `CamelCase` is calling attention to something as a "global noun", rather than a local label or a verb. Notice that Python names `True`, `False`, and `None` use `CamelCase` even though they are not classes.
 
 ### Avoid Name Adornments
 
