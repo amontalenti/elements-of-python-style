@@ -77,7 +77,7 @@ print(sum_)
 
 This is OK in a pinch, but it might be better to just choose a different name.
 
-You should rarely use `__mangled` double-underscore prefixes for class/instance/method labels, which have special [name mangling behavior][mangling] -- it's rarely necessary.
+You should rarely use `__mangled` double-underscore prefixes for class/instance/method labels, which have special [name mangling behavior][mangling] -- it's rarely necessary. Never create your own names using `__dunder__` adornments unless you are implementing a Python standard protocol, like `__len__`; this is a namespace specifically reserved for Python's internal protocols and shouldn't be co-opted for your own stuff.
 
 [mangling]: https://docs.python.org/2/tutorial/classes.html#private-variables-and-class-local-references
 
