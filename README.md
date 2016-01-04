@@ -185,14 +185,14 @@ from itertools import (groupby, chain,
 
 ```python
 # bad
-s = Search(using=client) \
-    .filter("term", cat="search") \
-    .query("match", title="python")
+response = Search(using=client) \
+           .filter("term", cat="search") \
+           .query("match", title="python")
 
 # good
-s = (Search(using=client)
-     .filter("term", cat="search")
-     .query("match", title="python"))
+response = (Search(using=client)
+            .filter("term", cat="search")
+            .query("match", title="python"))
 ```
 
 ### Use implicit continuations in function calls
