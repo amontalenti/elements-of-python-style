@@ -407,8 +407,8 @@ This same function can be written as follows:
 ```python
 # good
 def dedupe(items):
-    """Returns set of unique values in sequence."""
-    return set(items)
+    """Returns the number of duplicates removed from a list."""
+    return len(items) - len(set(items))
 ```
 
 This is a somewhat shocking example, because in addition to making this function "pure", we also made it much, much shorter. But it's not only shorter: it's better in a number of ways. The most important part is that for the good version, `assert dedupe(items) == dedupe(items)` always holds true. This makes it much easier to reason about, and much easier to test.
