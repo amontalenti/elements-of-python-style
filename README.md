@@ -442,7 +442,7 @@ The order matters, so may as well remember the rule: `bases` forms a hierarchy b
 
 ### Be careful with frameworks
 
-Python has a slew of frameworks for web, databases, and more. One of the joys of the language is that it's easy to create your own frameworks. When using an open source framework, you should be careful not to couple your "core code" too closely to the framework itself.
+Python has a slew of frameworks for web, databases, and more. One of the joys of the language is that it's easy to create your own frameworks. When using an open source framework, you should be careful not to couple your "core code" too closely to the framework itself. Also, is important know how the framework that you're using solves some problems. Study their source code to have a deeper knowledge about it, this can help you to make sure what is going on in the code that you don't see.
 
 When considering building your own framework for your code, you should err on the side of caution. The standard library has a lot of stuff built-in, PyPI has even more, and usually, [YAGNI applies][yagni].
 
