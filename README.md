@@ -161,10 +161,10 @@ class JSONWriter(object):
 
 ```python
  # bad
- filter(lambda x: len(x) > 0, map(myfunc, some_list))
+map(myfunc, filter(lambda x: x > 10, some_list))
 
  # good
- [myfunc(x) for x in some_list if len(x) > 0]
+[myfunc(x) for x in some_list if x > 10]
 ```
 
 ### Use parens `(...)` for continuations
