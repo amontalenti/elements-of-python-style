@@ -167,6 +167,8 @@ map(myfunc, filter(lambda x: x > 10, some_list))
 [myfunc(x) for x in some_list if x > 10]
 ```
 
+Though you should prefer comprehensions for most of the simple cases, there are occasions where `map()` or `filter()` will be more readable, so use your judgment.
+
 ### Use parens `(...)` for continuations
 
 ```python
