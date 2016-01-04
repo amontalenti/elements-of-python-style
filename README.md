@@ -491,7 +491,7 @@ Also, don't be afraid to refactor a nested if statement into a multi-part boolea
 # bad
 if response:
     if "data" in response:
-        if len(response["data"]) > 0:
+        if response["data"]:
             return response["data"]
 ```
 
@@ -501,7 +501,7 @@ is better written as:
 # good
 if (response and
     "data" in response and
-    len(response["data"]) > 0):
+    response["data"]):
     return response["data"]
 ```
 
