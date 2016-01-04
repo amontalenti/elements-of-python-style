@@ -511,7 +511,7 @@ Don't be afraid to add line-comments with `#`. Don't go overboard on these or ov
 
 ### Errors should never pass silently
 
-The biggest offender here is the bare `except: pass` clause. Never use these. Suppressing exceptions is simply dangerous. Scope your exception handling to single lines of code, and always scope your `except` handler to a specific type. Also, get comfortable with the `logging` module and `log.exception(...)`.
+The biggest offender here is the bare `except: pass` clause. Never use these. Suppressing **all** exceptions is simply dangerous. Scope your exception handling to single lines of code, and always scope your `except` handler to a specific type. Also, get comfortable with the `logging` module and `log.exception(...)`.
 
 ### If the implementation is hard to explain, it's a bad idea
 
