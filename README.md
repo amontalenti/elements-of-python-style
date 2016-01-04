@@ -529,7 +529,7 @@ This is a section for arguments we'd rather not settle. Don't rewrite other peop
 
 ### `str.format` vs overloaded format `%`
 
-Look, `str.format` is more robust, yet `%` with `"%s %s"` printf-style strings is more concise. Both will be around forever.
+`str.format` is more robust, yet `%` with `"%s %s"` printf-style strings is more concise. Both will be around forever.
 
 Remember to use unicode strings for your format pattern, if you need to preserve unicode:
 
@@ -553,7 +553,7 @@ But use whichever one you please. We choose not to care.
 
 This is unrelated to the earlier rule on `==` vs `is` for `None`. In this case, we are actually taking advantage of Python's "truthiness rules" to our benefit in `if item`, e.g. as a shorthand "item is not None or empty string."
 
-Look, truthiness is a [tad complicated][truth-values] in Python and certainly the latter is safer against some classes of bugs. The former, however, is very common in much Python code, and it's shorter. We choose not to care.
+Truthiness is a [tad complicated][truth-values] in Python and certainly the latter is safer against some classes of bugs. The former, however, is very common in much Python code, and it's shorter. We choose not to care.
 
 [truth-values]: https://docs.python.org/2/library/stdtypes.html#truth-value-testing
 
