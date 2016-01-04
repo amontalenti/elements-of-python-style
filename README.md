@@ -279,12 +279,12 @@ A good rule of thumb for whether you should create your own exception type is to
 # bad
 def reverse_sort(items):
     """
-    sorts items in reverse order
+    sort items in reverse order
     """
 
 # good
 def reverse_sort(items):
-    """Sorts items in reverse order."""
+    """Sort items in reverse order."""
 ```
 
 Keep the triple-quote's on the same line `"""`, capitalize the first letter, and include a period. Four lines become two, the `__doc__` attribute doesn't have crufty newlines, and the pedants are pleased!
@@ -388,7 +388,7 @@ As a simple example, you should **never** write code like this:
 ```python
 # bad
 def dedupe(items):
-    """Removes dupes in-place, returns number removed."""
+    """Removes dupes in-place and returns number removed."""
     seen = set()
     dupes = []
     for i, item in enumerate(items):
@@ -407,7 +407,7 @@ This same function can be written as follows:
 ```python
 # good
 def dedupe(items):
-    """Removes dupes, returns set of unique values."""
+    """Returns set of unique values in sequence."""
     return set(items)
 ```
 
