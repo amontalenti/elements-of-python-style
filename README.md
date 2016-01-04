@@ -305,7 +305,7 @@ Here's a quick reference to using Sphinx-style reST in your function docstrings:
 
 ```python
 def get(url, qsargs=None, timeout=5.0):
-    """Sends an HTTP GET request.
+    """Send an HTTP GET request.
 
     :param url: URL for the new request.
     :type url: str
@@ -388,7 +388,7 @@ As a simple example, you should **never** write code like this:
 ```python
 # bad
 def dedupe(items):
-    """Removes dupes in-place and returns number removed."""
+    """Remove dupes in-place and returns number removed."""
     seen = set()
     dupes = []
     for i, item in enumerate(items):
@@ -407,7 +407,7 @@ This same function can be written as follows:
 ```python
 # good
 def dedupe(items):
-    """Returns set of unique values in sequence."""
+    """Return set of unique values in sequence."""
     return set(items)
 ```
 
