@@ -627,19 +627,13 @@ For all Python packages and libraries:
 - `mypackage/__init__.py` preferred to `src/mypackage/__init__.py`
 - `mypackage/lib/__init__.py` preferred to `lib/__init__.py`
 - `mypackage/settings.py` preferred to `settings.py`
-- `README.md` describes the repo for a newcomer, always use Markdown
+- `README.rst` describes the repo for a newcomer; use reST
 - `setup.py` for simple facilities like `setup.py develop`
 - `requirements.txt` describes package dependencies for `pip`
 - `dev-requirements.txt` additional dependencies for tests/local
 - `Makefile` for simple (!!!) build/lint/test/run steps
 
 Also, always [pin your requirements](http://nvie.com/posts/better-package-management/).
-
-For "deployable" projects, such as web or backend services (rather than pure libraries), we like these tools:
-
-- `fabfile.py` for ssh/rsync to deploy servers
-- `.travis.yml` for continuous integration builds; should call `make`
-- `docker-compose.yml` for dependencies on databases, like postgres or redis
 
 ## Some Inspiration
 
