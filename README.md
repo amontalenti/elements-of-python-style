@@ -420,7 +420,7 @@ def dedupe(items):
 
 The most important improvement is that `assert dedupe(items) == dedupe(items)` always holds true. For the "bad" version, since `items` is modified in-place, the `num_dupes` found on a second run of the function will always be `0`, since it **removes** the dupes from the passed-in list **as a side effect**.
 
-If we take our earlier advice on "prefer declarative to imperative", we can make this functions even clearer:
+If we take our earlier advice on "prefer declarative to imperative", we can make this function even clearer:
 
 ```python
 # best
