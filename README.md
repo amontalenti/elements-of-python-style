@@ -383,23 +383,23 @@ David Beazley has [a YouTube tutorial on generators entitled "Generators: The Fi
 
 This is a concept that we can borrow from the functional programming community.  These kinds of functions and generators are alternatively described as "side-effect free", "referentially transparent", or as having "immutable inputs/outputs".
 
-As a simple example, you should **never** write code like this:
+As an example, you should **never** write code like this:
 
 ```python
 # bad
 def dedupe(items):
-    """Remove dupes in-place and returns number removed."""
+    """Remove dupes in-place, return items and # of dupes."""
     seen = set()
-    dupes = []
+    dupe_positions = []
     for i, item in enumerate(items):
         if item in seen:
-            dupes.append(i)
+            dupe_positions.append(i)
         else:
             seen.add(item)
-    num_removed = len(dupes)
-    for idx in sorted(dupes, reverse=True):
+    num_dupes = len(dupe_positions)
+    for idx in sorted(dupe_positions, reverse=True):
         items.pop(idx)
-    return num_removed
+    return items, num_dupes
 ```
 
 This same function can be written as follows:
@@ -407,11 +407,51 @@ This same function can be written as follows:
 ```python
 # good
 def dedupe(items):
-    """Return set of unique values in sequence."""
-    return set(items)
+    """Return deduped items and # of dupes."""
+    deduped = set()
+    num_dupes = 0
+    for item in items:
+        if item in deduped:
+            num_dupes += 1
+        else:
+            deduped.add(item)
+    return deduped, num_dupes
 ```
 
-This is a somewhat shocking example, because in addition to making this function "pure", we also made it much, much shorter. But it's not only shorter: it's better in a number of ways. The most important part is that for the good version, `assert dedupe(items) == dedupe(items)` always holds true. This makes it much easier to reason about, and much easier to test.
+The most important improvement is that `assert dedupe(items) == dedupe(items)` always holds true. For the "bad" version, since `items` is modified in-place, the `num_dupes` found on a second run of the function will always be `0`, since it **removes** the dupes from the passed-in list **as a side effect**.
+
+If we take our earlier advice on "prefer declarative to imperative", we can make this functions even clearer:
+
+```python
+# best
+def dedupe(items):
+    """Return deduped items and # of dupes."""
+    deduped = set(items)
+    num_dupes = len(items) - len(deduped)
+    return deduped, num_dupes
+```
+
+This is a somewhat shocking example, because in addition to making this function "pure" and "declarative", we also made it much, much shorter. But it's not only shorter: it's better. It reads like a description of what we need, rather than a description of how to get what we need.
+
+### If you must modify structures in-place, return `None`
+
+Some might like the "bad" version of `dedupe()` in the section above because it is more "efficient", in that it removes the dupes "in-place" rather than returning a deduped copy. If you are working with a large sequence, this would keep memory usage stable. But because it **returns** the modified list, it can lead to usage bugs like the following:
+
+```python
+>>> items = [1, 1, 1]
+>>> deduped, num_dupes = dedupe(items)
+print("Removed %s dupes from list of length %s." % (num_dupes, len(items)))
+```
+
+What would you expect this to print? Well, the "bad" version prints:
+
+    Removed 2 dupes from list of length 1.
+
+Impossible! See what happened? The problem is that the call to `len(items)` happened **after** the call to `dedupe(items)`. The "good" and "best" versions will rightly print:
+
+    Removed 2 dupes from list of length 3.
+
+Though you should usually avoid modifying data structures in-place as a side-effect, if you must do so, **don't return the modified structure from your function**. Instead, make your function return `None` to force your caller to use their original reference. In the standard library, `list.sort()` and `random.shuffle()` are good examples of this convention.
 
 ### Prefer simple argument and return types
 
