@@ -349,29 +349,33 @@ It's always better to have a `lib.time` module for time-related functions than t
 
 ### Declarative vs imperative
 
-You should prefer declarative to imperative programming. If you don't know what the difference is, look it up.
+You should prefer declarative to imperative programming. If you aren't familiar with the difference, Python's [functional programming guide][func] includes some good details and examples of how to use this style effectively.
 
-Use lightweight data structures like `list`, `dict`, `tuple`, and `set` to your advantage. It's always better to lay out your data, and then write some code to transform it, than to build up your data imperatively by repeatedly calling functions/methods.
+[func]: https://docs.python.org/3/howto/functional.html
 
-The ultimate example of this is the common list comprehension refactoring:
+You should use lightweight data structures like `list`, `dict`, `tuple`, and `set` to your advantage. It's always better to lay out your data, and then write some code to transform it, than to build up data by repeatedly calling mutating functions/methods.
 
-```python
- filtered = []
- for x in items:
-     if x.endswith(".py"):
-         filtered.append(x)
- return filtered
-```
-
-should be rewritten as:
+An example of this is the common list comprehension refactoring:
 
 ```python
- return [x
-         for x in items
-         if x.endswith(".py")]
+# bad
+filtered = []
+for x in items:
+    if x.endswith(".py"):
+        filtered.append(x)
+return filtered
 ```
 
-But another good example is rewriting an if/else chain as a dictionary lookup or repetitive code as a tuple of operations followed by a for loop.
+This should be rewritten as:
+
+```python
+# good
+return [x
+        for x in items
+        if x.endswith(".py")]
+```
+
+But another good example is rewriting an `if`/`elif`/`else` chain as a `dict` lookup.
 
 ### Grok generators
 
@@ -388,18 +392,18 @@ As a simple example, you should **never** write code like this:
 ```python
 # bad
 def dedupe(items):
-    """Remove dupes in-place and returns number removed."""
+    """Remove dupes in-place, return items and # of dupes."""
     seen = set()
-    dupes = []
+    dupe_positions = []
     for i, item in enumerate(items):
         if item in seen:
-            dupes.append(i)
+            dupe_positions.append(i)
         else:
             seen.add(item)
-    num_removed = len(dupes)
-    for idx in sorted(dupes, reverse=True):
+    num_dupes = len(dupe_positions)
+    for idx in sorted(dupe_positions, reverse=True):
         items.pop(idx)
-    return num_removed
+    return items, num_dupes
 ```
 
 This same function can be written as follows:
@@ -407,11 +411,15 @@ This same function can be written as follows:
 ```python
 # good
 def dedupe(items):
-    """Return set of unique values in sequence."""
-    return set(items)
+    """Return deduped items and # of dupes."""
+    deduped = set(items)
+    num_dupes = len(items) - len(deduped)
+    return deduped, num_dupes
 ```
 
-This is a somewhat shocking example, because in addition to making this function "pure", we also made it much, much shorter. But it's not only shorter: it's better in a number of ways. The most important part is that for the good version, `assert dedupe(items) == dedupe(items)` always holds true. This makes it much easier to reason about, and much easier to test.
+This is a somewhat shocking example. In addition to making this function pure, we also made it much, much shorter. It's not only shorter: it's better. Its purity means `assert dedupe(items) == dedupe(items)` always holds true for the "good" version. In the "bad" version, `num_dupes` will **always** be `0` on the second call, which can lead to subtle bugs when using the function.
+
+This also illustrates imperative vs declarative style: the function now reads like a description of what we need, rather than a set of instructions to build up what we need.
 
 ### Prefer simple argument and return types
 
