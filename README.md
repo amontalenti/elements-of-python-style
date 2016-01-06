@@ -347,6 +347,14 @@ Though sometimes classes can act as a helpful "mini namespace" (e.g. with `@stat
 
 It's always better to have a `lib.time` module for time-related functions than to have a `TimeHelper` class with a bunch of methods you are forced to subclass in order to use! Classes proliferate other classes, which proliferates complexity and decreases readability.
 
+### Generators and iterators
+
+Generators and iterators are Python's most powerful features -- you should master the iterator protocol, the `yield` keyword, and generator expressions.
+
+Not only are generators important for any function that needs to be called over a large stream of data, but they also have the effect of simplifying code by making it easy for you to write your own iterators. Refactoring code to generators often simplifies it while making it work in more scenarios.
+
+Luciano Ramalho, author of "Fluent Python", has a 30-minute presentation, ["Iterators & Generators: the Python Way"](https://www.youtube.com/watch?v=z4P6hSa6K9g), which gives an excellent, fast-paced overview. David Beazley, author of "Python Essential Reference" and "Python Cookbook", has a mind-bending three-hour video tutorial entitled ["Generators: The Final Frontier"](https://www.youtube.com/watch?v=5-qadlG7tWo) that is a satisfying exposition of generator use cases. Mastering this topic is worth it because it applies everywhere.
+
 ### Declarative vs imperative
 
 You should prefer declarative to imperative programming. If you don't know what the difference is, look it up.
@@ -372,12 +380,6 @@ should be rewritten as:
 ```
 
 But another good example is rewriting an if/else chain as a dictionary lookup or repetitive code as a tuple of operations followed by a for loop.
-
-### Grok generators
-
-Generators are one of Python's most powerful features -- you should master the `yield` keyword and generator expressions. Not only are they important for any function that needs to be called over a large stream of data, but they also have the effect of simplifying code by making it easy for you to write your own iterators. Refactoring code to generators often simplifies it while making it work in more scenarios. You should be comfortable with using and creating generators.
-
-David Beazley has [a YouTube tutorial on generators entitled "Generators: The Final Frontier"](https://www.youtube.com/watch?v=5-qadlG7tWo) that tells you everything you need to know.
 
 ### Prefer "pure" functions and generators
 
