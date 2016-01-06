@@ -140,7 +140,7 @@ class JSONWriter(object):
     pass
 ```
 
-(This rule flips in Python 3.)
+In Python 2, it's important to follow this rule. In Python 3, all classes implicitly inherit from `object` and this rule isn't necessary any longer.
 
 ### Don't repeat instance labels in the class
 
