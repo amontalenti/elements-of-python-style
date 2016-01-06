@@ -227,18 +227,26 @@ with open("somefile.txt", "w") as somefile:
 return
 ```
 
-### Use `is` when comparing to `None`
+### Use `is` when comparing to `None`, `True` and `False`
 
-The `None` value is a singleton but when you're checking for `None`, you rarely want to actually call `__eq__` on the LHS argument. So:
+The `None` value is a singleton but when you're checking for `None`, you rarely want to actually call `__eq__` on the LHS argument. The same goes with `True` and `False`. So:
 
 ```python
 # bad
 if item == None:
     continue
+if item == True:
+    continue
+if item == False:
+    continue
 
 # good
 if item is None:
    continue
+if item is True:
+    continue
+if item is False:
+    continue
 ```
 
 Not only is the good form faster, it's also more correct. It's no more concise to use `==`, so just remember this rule!
