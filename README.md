@@ -357,7 +357,9 @@ Luciano Ramalho, author of "Fluent Python", has a 30-minute presentation, ["Iter
 
 ### Declarative vs imperative
 
-You should prefer declarative to imperative programming. If you don't know what the difference is, look it up.
+You should prefer declarative to imperative programming. This means telling the machine *what* you want to do rather than specifically *how* to do it. Philip Roberts has written a nice explanation of the difference [here][imperative-vs-declarative].
+
+[imperative-vs-declarative]: http://latentflip.com/imperative-vs-declarative/
 
 Use lightweight data structures like `list`, `dict`, `tuple`, and `set` to your advantage. It's always better to lay out your data, and then write some code to transform it, than to build up your data imperatively by repeatedly calling functions/methods.
 
