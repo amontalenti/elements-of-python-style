@@ -349,7 +349,7 @@ It's always better to have a `lib.time` module for time-related functions than t
 
 ### Declarative vs imperative
 
-You should prefer declarative to imperative programming. If you aren't familiar with the difference, Python's [functional programming guide][func] includes some good details and examples of how to use this style effectively.
+You should prefer declarative to imperative programming. This is code that says  **what** you want to do, rather than code that describes **how** to do it. Python's [functional programming guide][func] includes some good details and examples of how to use this style effectively.
 
 [func]: https://docs.python.org/3/howto/functional.html
 
@@ -387,7 +387,7 @@ David Beazley has [a YouTube tutorial on generators entitled "Generators: The Fi
 
 This is a concept that we can borrow from the functional programming community.  These kinds of functions and generators are alternatively described as "side-effect free", "referentially transparent", or as having "immutable inputs/outputs".
 
-As a simple example, you should **never** write code like this:
+As a simple example, you should avoid code like this:
 
 ```python
 # bad
@@ -401,7 +401,7 @@ def dedupe(items):
         else:
             seen.add(item)
     num_dupes = len(dupe_positions)
-    for idx in sorted(dupe_positions, reverse=True):
+    for idx in reversed(dupe_positions):
         items.pop(idx)
     return items, num_dupes
 ```
