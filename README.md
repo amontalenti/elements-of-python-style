@@ -500,19 +500,16 @@ Also, don't be afraid to refactor a nested if statement into a multi-part boolea
 ```python
 # bad
 if response:
-    if "data" in response:
-        if response["data"]:
-            return response["data"]
+    if response.get("data"):
+        return len(response["data"])
 ```
 
 is better written as:
 
 ```python
 # good
-if (response and
-    "data" in response and
-    response["data"]):
-    return response["data"]
+if response and response.get("data"):
+    return len(response["data"])
 ```
 
 ### Readability counts
