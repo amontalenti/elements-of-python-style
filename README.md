@@ -161,10 +161,10 @@ class JSONWriter(object):
 
 ```python
  # bad
-map(myfunc, filter(lambda x: x > 10, some_list))
+map(truncate, filter(lambda x: len(x) > 30, items))
 
  # good
-[myfunc(x) for x in some_list if x > 10]
+[truncate(x) for x in items if len(x) > 30]
 ```
 
 Though you should prefer comprehensions for most of the simple cases, there are occasions where `map()` or `filter()` will be more readable, so use your judgment.
