@@ -301,7 +301,7 @@ This is perhaps the ultimate nitpick, but if you don't do it, it will drive peop
 
 ## Writing Good Docstrings
 
-Here's a quick reference to using Sphinx-style reST in your function docstrings:
+Here's a quick reference to using Sphinx-style RST (ReStructured Text) in your function docstrings:
 
 ```python
 def get(url, qsargs=None, timeout=5.0):
@@ -313,8 +313,8 @@ def get(url, qsargs=None, timeout=5.0):
     :type qsargs: dict
     :param timeout: In seconds.
     :rtype: mymodule.Response
-"""
-return request('get', url, qsargs=qsargs, timeout=timeout)
+    """
+    return request('get', url, qsargs=qsargs, timeout=timeout)
 ```
 
 Don't document for the sake of documenting. The way to think about this is:
