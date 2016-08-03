@@ -313,8 +313,8 @@ def get(url, qsargs=None, timeout=5.0):
     :type qsargs: dict
     :param timeout: In seconds.
     :rtype: mymodule.Response
-"""
-return request('get', url, qsargs=qsargs, timeout=timeout)
+    """
+    return request('get', url, qsargs=qsargs, timeout=timeout)
 ```
 
 Don't document for the sake of documenting. The way to think about this is:
