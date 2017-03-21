@@ -33,13 +33,13 @@ The only set of rules that seem to cause a disproportionate amount of controvers
 
 ## Flexibility on Line Length
 
-If the strict 79-character line length rule in `flake8` bothers you, feel free to ignore or adjust that rule. It's probably still a good rule-of-thumb -- like a "rule" that says English sentences should have 50 or fewer words, or that paragraphs should have fewer than 10 sentences. Here's the link to [flake8 config][f8config], see the `max-line-length` config option. Note also that often a `# noqa` comment can be added to a line to have a `flake8` check ignored, but please use these sparingly.
+If the strict 79-character line length rule in `flake8` bothers you, feel free to ignore or adjust that rule. It's probably still a good rule-of-thumb -- like a "rule" that says English sentences should have 50 or fewer words, or that paragraphs should have fewer than 10 sentences. Here's the link to [`max-line-length` flake8 config][max-line-f8-config]. Note also that often a `# noqa` comment can be added to a line to have a `flake8` check ignored, but please use these sparingly.
 
 90%+ of your lines should be 79 characters or fewer, though, for the simple reason that "Flat is better than nested". If you find a function where all the lines are longer than this, something else is wrong, and you should look at your code rather than at your flake8 settings.
 
 [pep8]: https://www.python.org/dev/peps/pep-0008/
 [flake8]: https://flake8.readthedocs.org
-[f8config]: https://flake8.readthedocs.org/en/latest/config.html
+[max-line-f8-config]: http://flake8.pycqa.org/en/latest/user/options.html?#cmdoption-flake8--max-line-length
 
 ## Consistent Naming
 
