@@ -520,6 +520,44 @@ Don't be afraid to add line-comments with `#`. Don't go overboard on these or ov
 
 The biggest offender here is the bare `except: pass` clause. Never use these. Suppressing **all** exceptions is simply dangerous. Scope your exception handling to single lines of code, and always scope your `except` handler to a specific type. Also, get comfortable with the `logging` module and `log.exception(...)`.
 
+### Error early
+
+When reading code, you naturally want to focus on the "happy path". Erroring from functions early on helps focusing on the happy path by first shaking off all edge cases and handling all potential error scenarios. To do this, try to exit from functions as soon as possible, which naturally bubbles all the error conditions to the top.
+
+So instead of this:
+
+```python
+# bad (deep nesting of the happy path)
+def some_view(request):
+    if request.user.is_authenticated():
+        do_something()
+
+        tour_completed = request.user.has_completed_tour()
+        if tour_completed:
+            overview = compute_things()
+            return render(request, overview)
+        else:
+            return redirect('/tour')
+    else:
+        return redirect('/home')
+```
+
+Consider this:
+
+```python
+# good (flatter, happy path at the end)
+def some_view(request):
+    if not request.user.is_authenticated():
+        return redirect('/home')
+
+    if not request.user.has_completed_tour():
+        return redirect('/tour')
+
+    do_something()
+    overview = compute_things()
+    return render(request, overview)
+```
+
 ### If the implementation is hard to explain, it's a bad idea
 
 This is a general software engineering principle -- but applies very well to Python code. Most Python functions and objects can have an easy-to-explain implementation. If it's hard to explain, it's probably a bad idea. Usually you can make a hard-to-explain function easier-to-explain via "divide and conquer" -- split it into several functions.
