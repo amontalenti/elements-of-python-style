@@ -3,6 +3,26 @@
 
 这篇文章基于PEP8，覆盖语法、模块布局、范式和架构等多个方面，介绍了一些个人认为比较好的python编写风格。
 
+原文介绍：  
+This document goes beyond PEP8 to cover the core of what I think of as great Python style. It is opinionated, but not too opinionated. It goes beyond mere issues of syntax and module layout, and into areas of paradigm, organization, and architecture. I hope it can be a kind of condensed ["Strunk & White"][strunk-white] for Python code.
+
+[strunk-white]: https://en.wikipedia.org/wiki/The_Elements_of_Style
+
+# 目录 
+
+  * [Python写作指南](#the-elements-of-python-style)
+    * [遵从大部分PEP8规范](#follow-most-pep8-guidelines)
+    * [关于每行代码的最大长度](#flexibility-on-line-length)
+    * [命名的一致性](#consistent-naming)
+    * [不值得钻牛角尖的一些点](#nitpicks-that-arent-worth-it)
+    * [写好docstring](#writing-good-docstrings)
+    * [范式 & 设计模式](#paradigms-and-patterns)
+    * [“python之禅”在你代码中的具体应用](#a-little-zen-for-your-code-style)
+    * [一些无关好坏的主观比较](#six-of-one-half-a-dozen-of-the-other)
+    * [有用的库与项目结构](#standard-tools-and-project-structure)
+    * [Some Inspiration](#some-inspiration)
+    * [Contributors](#contributors)
+
 ## 遵从大部分PEP8规范
 
 PEP8涵盖了大部分用户最常用的使用内容，例如空格、函数/类/方法之间的换行符、模块的导入、针对不再被推荐的功能的警告等等，且将他们管理地非常好。
