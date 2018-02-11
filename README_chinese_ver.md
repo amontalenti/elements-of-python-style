@@ -505,3 +505,37 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 - `Makefile` for simple (!!!) build/lint/test/run steps
 
 Also, always [pin your requirements](http://nvie.com/posts/better-package-management/).
+
+
+## Some Inspiration
+
+The following links may give you some inspiration about the core of writing Python code with great style and taste.
+
+- Python's stdlib [`Counter` class][Counter], implemented by Raymond Hettinger
+- The [`rq.queue` module][rq], originally by Vincent Driessen
+- This document's author also wrote [this blog post on "Pythonic" code][idiomatic]
+
+Go forth and be Pythonic!
+
+```
+$ python
+>>> import antigravity
+```
+
+[Counter]: https://github.com/python/cpython/blob/57b569d8af2b3263c5d9e6d75fb308f89ea17ac6/Lib/collections/__init__.py#L446-L841
+[rq]: https://github.com/nvie/rq/blob/master/rq/queue.py
+[idiomatic]: http://www.pixelmonkey.org/2010/11/03/pythonic-means-idiomatic-and-tasteful
+
+## Contributors
+
+- Andrew Montalenti ([@amontalenti][amontalenti]): original author
+- Vincent Driessen ([@nvie][nvie]): edits and suggestions
+
+[amontalenti]: http://twitter.com/amontalenti
+[nvie]: http://twitter.com/nvie
+
+---
+
+Like good Python style? Then perhaps you'd like to [work on our team of Pythonistas][tweet] at Parse.ly!
+
+[tweet]: https://twitter.com/amontalenti/status/682968375702716416
