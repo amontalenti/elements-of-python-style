@@ -20,8 +20,8 @@ This document goes beyond PEP8 to cover the core of what I think of as great Pyt
     * [“python之禅”在你代码中的具体应用](#a-little-zen-for-your-code-style)
     * [一些无关好坏的主观比较](#six-of-one-half-a-dozen-of-the-other)
     * [有用的库与项目结构](#standard-tools-and-project-structure)
-    * [Some Inspiration](#some-inspiration)
-    * [Contributors](#contributors)
+    * [灵感来源](#some-inspiration)
+    * [编著者](#contributors)
 
 ## 遵从大部分PEP8规范
 
@@ -41,18 +41,22 @@ PEP8是指一套设计准则，理论上来说他不是一套需要百分百严�
 
 ## 命名的一致性
 
-团队如果在命名规则上能够共同遵守一些简单的规则，将会很有效地减少很多不必要的代码问题。
+团队如果在命名规则上能够共同遵守一些简单的规则，将会很有效地减少很多不必要的协作问题。
 
 ### 建议的命名规则
 
-请注意第一条，HTTPWriter而不是HttpWriter
+请注意第一条，HTTPWriter而不是HttpWriter，专有名词保持大写，如API。
 
 - Class names: `CamelCase`, and capitalize acronyms: `HTTPWriter`, not `HttpWriter`.
-- Variable names: `lower_with_underscores`.
-- Method and function names: `lower_with_underscores`.
-- Modules: `lower_with_underscores.py`. (但最好是使用那些连下划线都不需要的词)
-- Constants: `UPPER_WITH_UNDERSCORES`.
+- 常规变量名: `lower_with_underscores`.
+- 方法/函数名: `lower_with_underscores`.
+- 模块文件: `lower_with_underscores.py`. (但最好是使用那些连下划线都不需要的词)
+- 静态变量: `UPPER_WITH_UNDERSCORES`.
 - Precompiled regular expressions: `name_re`.
+
+其他详情参见 [the Pocoo team][pocoo].
+
+[pocoo]: http://www.pocoo.org/internal/styleguide/
 
 ### 下划线的使用
 
@@ -61,7 +65,7 @@ PEP8是指一套设计准则，理论上来说他不是一套需要百分百严�
 函数经常在名称前加单下划线来表示他是私有的，几乎是一个约定俗成的事实。但这个规则应该被谨慎使用，甚至只应该在以下两种情况下使用：
 
 - 在会被广泛使用的API内部；
-- 涉及[information hiding](http://wiki.c2.com/?InformationHiding)；
+- 涉及[information hiding（信息隐藏）](http://wiki.c2.com/?InformationHiding)；
 
 PEP8建议应该使用单下划线来避免命名与built-in命名冲突：
 
@@ -70,13 +74,16 @@ PEP8建议应该使用单下划线来避免命名与built-in命名冲突：
 
 但事实上比起加下划线，或许你应该优先考虑换另一个词语。  
 
-对于前置双下划线，理论上它**只应该**在遇到[name mangling behavior](https://docs.python.org/2/tutorial/classes.html#private-variables-and-class-local-references)的情况下使用；  
+对于前置双下划线，理论上它**只应该**在遇到需要[name mangling behavior](https://docs.python.org/2/tutorial/classes.html#private-variables-and-class-local-references)的情况下使用，但很多情况下其实我们并不需要；  
 而对于前后置双下划线（例如`__len__`）它只应该在实现python标准协议的过程中使用，它是为python内部协议特意保留的命名空间，不应该被随意在团队工作中使用。
+
+**译者观点**   
+介绍一下name mangling behavior。python在运行时会将由双下划线标识的变量在前方加上类名，例如在A类中的变量`__b`，在运行时会变成`_A__b`。这是因为python没有像其他语言一样的`private`关键词，只能通过这种方法起到标识变量的效果。这种方法有利于子类重写父类的方法而不会破坏类内部的方法调用。    
+但这个机制是“防君子不防小人”（怪怪的）的，即便你使用了双下划线，其他人依旧可以强行使用类似`_A__b`的方法访问这个变量。在日常开发中有一个比较约定俗成的通用方法是在变量前加入单下划线而不是使用name mangling behavior，只起到一个警告的效果而不是完全阻止。
 
 ### 避免过于简单的命名
 
-- 例如i，x，_等，在简单的函数中使用无可厚非
-- 如lambda/列表解析等
+- 例如i，x，_等，在简单的函数中使用无可厚非，像lambda/列表解析等
 - 但除了这些情况之外千万不要随意这么用，这将会给其他人的阅读造成很大的困难
 
 ### 业界观念上比较认可的命名方式
@@ -101,7 +108,7 @@ PEP8建议应该使用单下划线来避免命名与built-in命名冲突：
 	class JSONWriter(object):
 	    pass
 
-在python2中，遵守这条规则非常非常重要，因为旧式类与新式类的表现有一定的差别。在python3，所有的类都默认继承自object即所有的类都是新式类，所以这条规则在python3变得不那么重要了。
+在python2中，遵守这条规则非常非常重要，因为旧式类与新式类的表现有一定的差别。在python3，所有的类都默认继承自object，即所有的类都是新式类，所以这条规则在python3变得不那么重要了。
 
 ### 变量不要重名
 
@@ -185,7 +192,12 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 
 ### 避免使用`sys.path`黑科技
 
-可能很多人使用类似`sys.path.insert(0, "../")`的方式来实现python的动态导入，但这种做法是非常影响可读性的，其他人很难轻易通过这个知道你到底想干嘛。
+**译者观点**   
+原文的这个部分描述的不是很清楚，这里加了一部分我个人的理解。如有需要请参阅原文。
+
+可能很多人使用类似`sys.path.insert(0, "../")`的方式来实现python的动态导入，但这种做法是非常影响可读性的，其他人很难轻易通过这个知道你到底想干嘛。   
+
+python已经具备了非常完善的模块处理机制。通过修改`PYTHONPATH`可以调整加载的模块，或是运行时使用`-m`可以以模块方式运行python代码。另外，通过import与`__import`之类的方式也能够有效地解决动态调用模块的问题。   
 
 模块不应该需要依赖工作目录的文件结构才能正常运行，这不免有些跨越层级了。模块应该在模块层面上解决互相依赖的问题（例如import），而不是通过文件层面。
 
@@ -232,7 +244,7 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 
 在上面的例子中，关于timeout的类型是可以略去的，因为timeout的默认值已经很明显地表现了它是一个`float`类型；而qsargs没有指定它是什么类型，所以docstring为其做了标识；rtype主要用于标识返回类型。
 
-代码被阅读的频率要远高于它被修改，docstring的存在能够有效地降低阅读成本，是非常必要的。
+代码被阅读的频率要远高于它被修改的频率，docstring的存在能够有效地降低阅读成本，是非常必要的。
 
 但是也要注意的是，恰当的注释会对开发有所帮助，过多的注释反而会给人带来困扰。理论上，开发者应优先对一些会被广泛复用的代码（函数）加上注释，并在每次函数进行更新时对docstring进行同步更新。
 
@@ -242,7 +254,7 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 
 - 多用函数而不是类。函数与模块是代码复用的基本单位，而且他们是最灵活的。
 - 类比起函数更加“高级”，它一般被广泛应用在一些更为庞大的功能上例如容器的实现/代理/类型系统等。但是高级意味着，它的维护成本需要相应的提升。在大多数情况下，它很可能是一把“牛刀”，往往我们只需要使用函数就足以应对这些情况。
-- 一些人喜欢用类将相关的函数进行分类，但这是错的，要达到同样的目的，应该使用module而不是class。尽管有些时候类可以表现地像是一个迷你版本的命名空间（使用@staticmethod），但类中的方法通常应该围绕着对象的内部操作展开，而不仅仅只是一系列行为的分组。
+- 一些人喜欢用类将相关的函数进行分类，但这是错的。要达到同样的目的，应该使用module而不是class。尽管有些时候类可以表现地像是一个mini版本的命名空间（使用@staticmethod），但类中的方法通常应该围绕着对象的内部操作展开，而不仅仅只是一系列行为的分组。
 - 通过一个module去调用函数比通过类来调用要清晰得多。例如你需要管理一系列时间相关的函数：
 	- 使用一个名为lib.time的模块来管理，可以灵活的根据需要进行导入与重命名；
 	- 使用一个名为TimeHelper的类来管理，在使用时你甚至还需要构建一个它的子类来使用他的方法；
@@ -319,13 +331,20 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 - 简单类型：`set, tuple, list, int, float, bool` 
 - 在上述类型无法满足的情况下再考虑使用更为复杂的类型
 
+**译者观点**   
+使用基本类型作为函数IO一定程度上也能够降低整体的耦合性。
+
 ### 避免传统的OOP编程思想
 
 - 在java与C++中，代码的复用基本上通过类继承与多态实现；
-- 在python中，尽管我们也可以这么做，但事实上这并不是很符合python风格。
-- 在python中，代码的复用最普遍的做法是通过模块与函数来实现。
-- 如果发现在实际使用中你使用类来进行代码重用，请停止这样做并重新考虑一下，尤其是当你的类名与内部函数很相似的时候。 `(e.g. Runnable.run())`
+- 在python中，尽管我们也可以这么做，但事实上这并不是很pythonic。
+- 在python中，代码的复用最普遍的做法是通过模块与函数来实现。python的核心开发者曾经做过一个演讲批评了类被滥用的行为["Stop Writing Classes"][stop-classes]，函数在python中是“一等公民”，在很多时候我们并不需要特地去构建一个类。如果你在实际使用中使用类实现代码的重用，请重新考虑一下，尤其是当你的类名与其内部函数很相似的时候。 `(e.g. Runnable.run())`
 - 对于多态，应该使用鸭子类型来解决。在python中，我们关注的不再是对象本身是什么东西，而是它能够被怎么使用。
+
+[stop-classes]: https://www.youtube.com/watch?v=o9pEzgHorH0
+
+**译者观点**   
+作者这个部分并不是说OOP编程不好，而是在OOP的实现上python的方式可能跟其他语言有所不同。
 
 ### mixin好，但不要滥用 
 
@@ -339,7 +358,10 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 		class APIHandler(AuthMixin, RequestHandler):
 		    """Handle HTTP/JSON requests with security."""
 
-“这个类混合了auth的行为，他是一个RequestHandler。”
+这样设计可以直接在函数签名透露出：“这个类混合了auth的行为，他是一个RequestHandler。”
+
+**译者观点**   
+在命名中直接体现函数的功能是非常优雅的，函数的设计应该遵守这个原则，让其他用户直接通过名字与docstring就能够准确地使用这个函数。
 
 ### 小心地使用框架
 
@@ -354,18 +376,21 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 ### 尊重元编程
 
 - 元编程是python中非常重要的核心组成部分，许多功能都是基于此实现的，包括装饰器/上下文管理器/描述符/导入等等；
-- 熟悉元编程能够让你应对非常复杂/多样的场景，是你编写属于自己的框架的第一步。
+- 熟悉元编程能够让你应对非常复杂/多样的场景，自定义对象的表现，是你编写属于自己的框架的第一步。
 
 ### 不要害怕带有双下划线的方法（内部方法）
 
 - 他们无非就是一些一开始选定的用于实现内部协议的命名空间，并没有什么太过神奇的地方；
 - 不过需要承认的是，他们比起常规函数确实可能会造成一些令人困扰的结果；
-- 在没有一个好理由的情况下，没有充分考虑就贸然重写他们并不是一个好主意。
+- 没有充分考虑就贸然重写他们并不是一个好主意，除非你真的有一个足够充分的理由。
 
 ## “python之禅”在你代码中的具体应用
 
 ### 美比丑好
-以编写优美的代码为目标
+以编写优美的代码为目标。
+
+**译者观点**   
+在团队协作中，编程的目的绝对绝对不只是完好的实现功能，尤其对于python这种与自然语言已经非常接近的高级语言。
 
 ### 准确比模糊好
 
@@ -492,24 +517,26 @@ None是Nonetype的唯一实例，即所有对它的引用事实上都链接到�
 
 一个项目结构最好是这样摆放：
 
-- `mypackage/__init__.py` preferred to `src/mypackage/__init__.py`
-- `mypackage/lib/__init__.py` preferred to `lib/__init__.py`
-- `mypackage/settings.py` preferred to `settings.py`
+- `mypackage/__init__.py` 不如 `src/mypackage/__init__.py`
+- `mypackage/lib/__init__.py` 不如 `lib/__init__.py`
+- `mypackage/settings.py` 不如 `settings.py`
+
+注：此处的根目录为项目根目录。
 
 其他文件：
 
-- `README.rst` describes the repo for a newcomer; use reST
-- `setup.py` for simple facilities like `setup.py develop`
-- `requirements.txt` describes package dependencies for `pip`
-- `dev-requirements.txt` additional dependencies for tests/local
-- `Makefile` for simple (!!!) build/lint/test/run steps
+- `README.rst`/`README.md` 使用reST/Markdown向新用户描述这个项目的功能，介绍整个项目。
+- `setup.py` 用于在不同机器上安装这个项目包。
+- `requirements.txt` 声明了这个项目所需的依赖库，需要`pip`。
+- `dev-requirements.txt` 与上面不同的是，它用于管理一些调试过程中需要的依赖库。
+- `Makefile` 用于简单的 build/lint/test/run 操作步骤
 
 Also, always [pin your requirements](http://nvie.com/posts/better-package-management/).
 
 
-## Some Inspiration
+## 灵感与启发
 
-The following links may give you some inspiration about the core of writing Python code with great style and taste.
+下面介绍的链接或许可以给你一些启发，让你在开发过程中可以写出风格更好、更加pythonic的代码。
 
 - Python's stdlib [`Counter` class][Counter], implemented by Raymond Hettinger
 - The [`rq.queue` module][rq], originally by Vincent Driessen
@@ -526,7 +553,7 @@ $ python
 [rq]: https://github.com/nvie/rq/blob/master/rq/queue.py
 [idiomatic]: http://www.pixelmonkey.org/2010/11/03/pythonic-means-idiomatic-and-tasteful
 
-## Contributors
+## 编著者
 
 - Andrew Montalenti ([@amontalenti][amontalenti]): original author
 - Vincent Driessen ([@nvie][nvie]): edits and suggestions
