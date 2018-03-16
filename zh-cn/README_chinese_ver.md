@@ -13,18 +13,18 @@ This document goes beyond PEP8 to cover the core of what I think of as great Pyt
 
 # 目录 
 
-  * [Python写作指南](#the-elements-of-python-style)
-    * [遵从大部分PEP8规范](#follow-most-pep8-guidelines)
-    * [关于每行代码的最大长度](#flexibility-on-line-length)
-    * [命名的一致性](#consistent-naming)
-    * [不值得钻牛角尖的一些点](#nitpicks-that-arent-worth-it)
-    * [写好docstring](#writing-good-docstrings)
-    * [范式 & 设计模式](#paradigms-and-patterns)
-    * [“python之禅”在你代码中的具体应用](#a-little-zen-for-your-code-style)
-    * [一些无关好坏的主观比较](#six-of-one-half-a-dozen-of-the-other)
-    * [有用的库与项目结构](#standard-tools-and-project-structure)
-    * [灵感来源](#some-inspiration)
-    * [编著者](#contributors)
+  * [Python写作指南](#Python写作指南)
+    * [遵从大部分PEP8规范](#遵从大部分PEP8规范)
+    * [关于每行代码的最大长度](#关于每行代码的最大长度)
+    * [命名的一致性](#命名的一致性)
+    * [不值得钻牛角尖的一些点](#不值得钻牛角尖的一些点)
+    * [写好docstring](#写好docstring)
+    * [范式 & 设计模式](#范式-设计模式)
+    * [“python之禅”在你代码中的具体应用](#“python之禅”在你代码中的具体应用)
+    * [一些无关好坏的主观比较](#一些无关好坏的主观比较)
+    * [有用的库与项目结构](#有用的库与项目结构)
+    * [灵感来源](#灵感来源)
+    * [编著者](#编著者)
 
 ## 遵从大部分PEP8规范
 
@@ -251,7 +251,7 @@ python已经具备了非常完善的模块处理机制。通过修改`PYTHONPATH
 
 但是也要注意的是，恰当的注释会对开发有所帮助，过多的注释反而会给人带来困扰。理论上，开发者应优先对一些会被广泛复用的代码（函数）加上注释，并在每次函数进行更新时对docstring进行同步更新。
 
-## 范式 & 设计模式 ##
+## 范式 & 设计模式
 
 ### 函数 vs 类
 
