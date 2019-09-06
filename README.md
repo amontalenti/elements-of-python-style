@@ -534,7 +534,7 @@ But seriously: beautiful code without tests is simply worse than even the uglies
 
 This is a section for arguments we'd rather not settle. Don't rewrite other people's code because of this stuff. Feel free to use these forms interchangeably.
 
-### `str.format` vs overloaded format `%`
+### `str.format` vs overloaded format `%` vs f-strings
 
 `str.format` is more robust, yet `%` with `"%s %s"` printf-style strings is more concise. Both will be around forever.
 
@@ -555,6 +555,9 @@ Also, don't re-invent the wheel. One thing `str.format` does unequivocally bette
 But use whichever one you please. We choose not to care.
 
 [str-format]: https://docs.python.org/2/library/string.html#formatspec
+
+F-strings are [new in Python 3.6](https://docs.python.org/3/reference/lexical_analysis.html#f-strings) You may find them easier to compose and to read `f"result: {value:{width}.{precision}}"`. The tradeoffs are [localization](https://stackoverflow.com/a/56264202/5181298) and [security](http://lucumr.pocoo.org/2016/12/29/careful-with-str-format/). Python executes f-strings, so they present an additional attack surface: avoid including user-generated data.
+
 
 ### `if item` vs `if item is not None`
 
