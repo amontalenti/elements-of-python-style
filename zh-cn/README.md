@@ -59,7 +59,7 @@ PEP8是指一套设计准则，理论上来说他不是一套需要百分百严�
 
 其他详情参见 [the Pocoo team][pocoo].
 
-[pocoo]: http://www.pocoo.org/internal/styleguide/
+[pocoo]: https://flask.palletsprojects.com/en/1.1.x/styleguide/
 
 ### 下划线的使用
 
