@@ -317,6 +317,8 @@ def get(url, qsargs=None, timeout=5.0):
     return request('get', url, qsargs=qsargs, timeout=timeout)
 ```
 
+While this is the default Sphinx-style for docstrings, [more legible alternatives exist](http://sphinx-doc.org/ext/napoleon.html).
+
 Don't document for the sake of documenting. The way to think about this is:
 
 ```python
