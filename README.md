@@ -620,7 +620,7 @@ When you need to automate deployment for your Python project (e.g. for web appli
 
 [`flake8` is a good choice][flake8] for linting, as it combines `pep8` with `pyflakes` and that's usually all you need on the linting side.
 
-It's very common in the community these days to use the [`black` formatter][black], which is similar in principle to the go code formatter. But this is optional.
+It's very common in the community to use the [`black` formatter][black], which is similar in principle to the go code formatter. But this is optional.
 
 [flake8]: https://flake8.pycqa.org/en/latest/
 [black]: https://black.readthedocs.io/en/stable/
@@ -645,7 +645,7 @@ For local development & local dependency environments, [`pyenv`][pyenv] is the g
 This is because `pyenv` can manage plain CPython installations, both future ones and historical ones; it can manage Conda environments via `miniconda`; it lets you run Python 2 and Python 3 side-by-side; it even supports PyPy, for situations where you need that; and, via `pyenv-virtualenv`, it lets you layer "virtual environments" over your installed Python versions. This lets you isolate dependencies between your several Python projects. It's also a good choice for simple Python "environment-based" deployments to remote servers. You can read [this detailed StackOverflow answer][stackoverflow-on-pyenv] on why this is a solid choice.
 
 [pyenv]: https://github.com/pyenv/pyenv/blob/master/README.md
-[stackoverflow-on-pyenv]:(https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe/41573588#41573588)
+[stackoverflow-on-pyenv]: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe/41573588#41573588
 
 ### Dependencies
 
@@ -661,7 +661,7 @@ Creating a `setup.py` file and using `setuptools` is a good idea if you're publi
 
 Yes, it involves some boilerplate to set up initially, but it's generally a "set-it-and-forget-it" thing. Don't overthink it. The Python Packaging Authority (PyPA) has [a nice packaging tutorial][pypa-tutorial] that covers this ground.
 
-If you need binary distribution, Wheels are a good choice; they are supported by the Python community through [PEP 427][pep-427], and the [PyPA maintains the wheel project][pypa].
+If you need binary distribution, `wheel` is a good choice; it is supported by the Python community through [PEP 427][pep-427], and the [PyPA maintains the wheel project][pypa].
 
 [pypa-tutorial]: https://packaging.python.org/tutorials/packaging-projects/
 [pep-427]: https://www.python.org/dev/peps/pep-0427/ 
@@ -673,7 +673,7 @@ There's quite a lot of history behind Python's packaging options -- spanning dep
 
 Python started with `setuptools` and `easy_install`, later added `pip`, which definitely improved over `easy_install`. But then, later, people realized pinning was useful for the way Python was deployed, so someone built `pip-tools`. Around the same time, Anaconda, one of the commercial sponsors of the scientific Python community that often faced dependency hell, worked furiously on `conda`. Even Guido van Rossum, Python's creator, once told the Anaconda  team that packaging was "uninteresting" to the core team, and thus greenlit the development of `conda` as a project in the community.
 
-Then in the last couple years, a couple of well-known Python F/OSS folks built `poetry` and `pipenv`. They are great projects, but they are new alternatives to `pip`. So, we face a paradox of choice. It's just the free-wheeling nature of a very open F/OSS community, especially since the Python core team has decided not to "bless" any one or another packaging/installer tool (except to ratify `pyproject.toml` for packaging and `wheel` for distribution, and even those decisions only happened somewhat recently).
+Then in the last couple years, a couple of well-known Python F/OSS folks built `poetry` and `pipenv`. They are great projects, but they are new alternatives to `pip`. So, we face a paradox of choice. It's just the free-wheeling nature of a very open F/OSS community, especially since the Python core team has decided not to "bless" any one or another packaging/installer tool (though they have ratified `pyproject.toml` for packaging and `wheel` as a distribution format).
 
 When one really thinks about it, though, the only "schism" in the community is between PyPI and Conda.
 
