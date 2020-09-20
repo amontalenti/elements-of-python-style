@@ -601,7 +601,91 @@ Essentially, Python turns the [first line into the second automatically][raises]
 
 ## Standard Tools and Project Structure
 
-We've made some choices on "best-of-breed" tools for things, as well as the very minimal starting structure for a proper Python project.
+We've made some choices on "best-of-breed" tools for things, as well as the very minimal starting structure for a proper Python project. There's a zoo of options out there, but this should serve as a durable selection for getting started.
+
+### Build and deploy
+
+It's generally unnecessary to use any sort of "build tool" with Python, since development usually involves running `python` commands against your source tree directly. However, as will be described below, it is very common to include a `setup.py` file in your source root as an entry point for building packages from your source code.
+
+That said, you'll often find very simple and minimalistic [GNU `make`][make] files (named `Makefile`) in use on Python projects. These are usually small files that simply list commands for finding dependencies, packaging, linting, testing, and so on.
+
+I'd recommend _against_ coupling your Python project to one of the myriad generic build tools out there, like Scons or Bazel. That is, if it can be avoided.
+
+When you need to automate deployment for your Python project (e.g. for web applications), you're likely going to adopt [Fabric][fabfile], which offers something akin to `make` but with the added capabilities of a full-blown Python API and the ability to manage remote servers via SSH.
+
+[make]: https://www.gnu.org/software/make/manual/make.html#Overview
+[fabfile]: http://www.fabfile.org/
+
+### Linting and formatting
+
+[`flake8` is a good choice][flake8] for linting, as it combines `pep8` with `pyflakes` and that's usually all you need on the linting side.
+
+It's very common in the community to use the [`black` formatter][black], which is similar in principle to the go code formatter. But this is optional.
+
+[flake8]: https://flake8.pycqa.org/en/latest/
+[black]: https://black.readthedocs.io/en/stable/
+
+### Testing
+
+The [`pytest` framework][pytest] is totally fine and very popular, but you also won't get any odd looks for sticking with `unittest`, and especially [`doctest`][doctest], in the stdlib. 
+
+For property-based testing (aka "Quickcheck"-style testing), you can layer on [`hypothesis`][hypothesis]. For code coverage statistics on your tests, you can layer on [`pytest-cov`][pytest-cov].
+
+[pytest]: https://docs.pytest.org/en/stable/
+[doctest]: https://docs.python.org/3/library/doctest.html
+[hypothesis]: https://hypothesis.readthedocs.io/en/latest/
+[pytest-cov]: https://pytest-cov.readthedocs.io/en/latest/readme.html
+
+### Environments 
+
+Because operating systems differ dramatically in what version of Python they run, and how they manage Python dependencies, you'll very likely find yourself in need of an environment manager for your Python code.
+
+For local development & local dependency environments, [`pyenv`][pyenv] is the gold standard. When used together with its included `pyenv-virtualenv` plugin, it is very future-proof and solid.
+
+This is because `pyenv` can manage plain CPython installations, both future ones and historical ones; it can manage Conda environments via `miniconda`; it lets you run Python 2 and Python 3 side-by-side; it even supports PyPy, for situations where you need that; and, via `pyenv-virtualenv`, it lets you layer "virtual environments" over your installed Python versions. This lets you isolate dependencies between your several Python projects. It's also a good choice for simple Python "environment-based" deployments to remote servers. You can read [this detailed StackOverflow answer][stackoverflow-on-pyenv] on why this is a solid choice.
+
+[pyenv]: https://github.com/pyenv/pyenv/blob/master/README.md
+[stackoverflow-on-pyenv]: https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe/41573588#41573588
+
+### Dependencies
+
+For installing dependencies, you'll want to avoid the debates going on in the community related to `pipenv` & `poetry`, and stick with `pip`.
+
+Most Pythonistas, upon cloning a Python project, instinctively look for a `requirements.txt` file so that they can run the incantation `pip install -r requirements.txt` to fetch your dependencies.
+
+You can also  layer on `pip-tools` if you need version pinning; it is being actively maintained, and its logic is even re-used by some other dependency manager projects.
+
+### Packaging
+
+Creating a `setup.py` file and using `setuptools` is a good idea if you're publishing your library as a formal dependency to a private or public PyPI server. 
+
+Yes, it involves some boilerplate to set up initially, but it's generally a "set-it-and-forget-it" thing. Don't overthink it. The Python Packaging Authority (PyPA) has [a nice packaging tutorial][pypa-tutorial] that covers this ground.
+
+If you need binary distribution, `wheel` is a good choice; it is supported by the Python community through [PEP 427][pep-427], and the [PyPA maintains the wheel project][pypa].
+
+[pypa-tutorial]: https://packaging.python.org/tutorials/packaging-projects/
+[pep-427]: https://www.python.org/dev/peps/pep-0427/ 
+[pypa]: https://wheel.readthedocs.io/en/stable/
+
+### Some historical commentary on packaging in Python
+
+There's quite a lot of history behind Python's packaging options -- spanning dependency management, resolution, code packaging, and deployment. This makes sense, given that packaging was never taken up by the Python core team, and thus developed in the open among many open source communities. This has, however, provided a confusing message to new users about "what is standard".
+
+Python started with `setuptools` and `easy_install`, later added `pip`, which definitely improved over `easy_install`. But then, later, people realized pinning was useful for the way Python was deployed, so someone built `pip-tools`. Around the same time, Anaconda, one of the commercial sponsors of the scientific Python community that often faced dependency hell, worked furiously on `conda`. Even Guido van Rossum, Python's creator, once told the Anaconda  team that packaging was "uninteresting" to the core team, and thus greenlit the development of `conda` as a project in the community.
+
+Then in the last couple years, a couple of well-known Python F/OSS folks built `poetry` and `pipenv`. They are great projects, but they are new alternatives to `pip`. So, we face a paradox of choice. It's just the free-wheeling nature of a very open F/OSS community, especially since the Python core team has decided not to "bless" any one or another packaging/installer tool (though they have ratified `pyproject.toml` for packaging and `wheel` as a distribution format).
+
+When one really thinks about it, though, the only "schism" in the community is between PyPI and Conda.
+
+PyPI definitively holds the equivalent role in the Python community that npmjs.com does in JavaScript or that maven.org does in Java. Conda, on the other hand, is an "alternative packaging ecosystem" that is trying to focus on more complex setup and deployment scenarios, especially those in data science or scientific computing.
+
+For example, if you want to install `pyspark`, the Python API for [Apache Spark][apache-spark], you'll find very different results between PyPI and conda-forge. [In the case of PyPI][pypi], installing `pyspark` only installs the Python code necessary to run `import pyspark` successfully. But it won't install the "implied dependencies", such as Java/JDK, Scala, and the Apache Spark framework itself. [In the case of conda-forge][conda-forge], however, installing `pyspark` gives you that Python code, as well as the full-blown managed installation of Java/JDK, Scala, and Apache Spark.
+
+So, one other way to think about is that PyPI manages "only" Python projects, whereas conda-forge manages many Python projects, plus many other Python-affiliated projects, regardless of underlying language or implementation, with a bias toward supporting scientific computing packages especially well. This might be very convenient if you're a data scientist, but using `conda` is overkill for _most_ Python projects.
+
+[apache-spark]: https://spark.apache.org/
+[pypi]: https://pypi.org/
+[conda-forge]: https://anaconda.org/conda-forge/pyspark
 
 ### The Standard Library
 
@@ -626,7 +710,7 @@ We've made some choices on "best-of-breed" tools for things, as well as the very
 - `msgpack-python` for a more compact encoding than JSON
 - `futures` for Future/pool concurrency primitives
 - `docopt` for quick throwaway CLI tools
-- `py.test` for unit tests, along with `mock` and `hypothesis`
+- `pytest` for unit tests, along with `mock` and `hypothesis` as needed
 
 ### Local Development Project Skeleton
 
