@@ -675,6 +675,6 @@ $ python
 
 ---
 
-Like good Python style? Then perhaps you'd like to [work on our team of Pythonistas][tweet] at Parse.ly!
+Like good Python style? Then perhaps you'll enjoy this style guide author's [past blog posts on Python][amonpy].
 
-[tweet]: https://twitter.com/amontalenti/status/682968375702716416
+[amonpy]: https://amontalenti.com/?s=python
